@@ -1,0 +1,5 @@
+CC-BY-SA 4.0
+visual update
+===============================
+
+License Source Code: Copyright (C) 2013-2023 Stuart Jones - LGPL v2.1
