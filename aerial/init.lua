@@ -307,21 +307,12 @@ Flight = {
 
 			-- Grant fly privilege to player if flyspeed is non-zero
 			grant = function(flight)
-				if flight.wing.can_fly then
-					local privs = minetest.get_player_privs(playername)
-					privs.fly = true
-					minetest.set_player_privs(playername, privs)
-					return true
-				else
-					return false
-				end
+				
 			end,
 
 			-- Revoke fly privilege from player
 			revoke = function(flight)
-				local privs = minetest.get_player_privs(playername)
-				privs.fly = nil
-				minetest.set_player_privs(playername, privs)
+				
 			end,
 
 			-- Stamina processing associated with flight
