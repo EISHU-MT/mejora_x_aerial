@@ -1,0 +1,8 @@
+#enable skin
+mejora_enable_skin (enable skin) bool true
+
+#enable wings
+mejora_enable_wings (enable wings) bool true
+
+#enable shield
+mejora_enable_shield (enable shields) bool true

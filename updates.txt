@@ -1,0 +1,33 @@
+Version 1 :
+* the mod was added
+
+version 2.0:
+*accessories removed
+*the size of the textures was decreased because they are too high and cause lag
+*the demonic wings were added
+*fixed zodiac wings batting issue
+
+version 3.0 :
+*blue-red demonic wings
+*harley quinn wings
+*godoudamas will be added
+
+version (4.0) :
+*Creation materials will be updated
+*shield will be added
+*shield of ansata
+*shield of obsidian
+*shield of culthu
+*shielf of hero
+*French language will be added
+*optimization*
+
+version (5.0)  :
+
+
+
+note: *the cultu shield is available with the mod new minerals
+news minerals:    https://content.minetest.net/packages/Giga_M/expansion_armor/
+
+The hero's shield is available with the lavastuff mod dark angel wings is available with lavastuff mod
+lavastuff:     https://content.minetest.net/packages/Lone_Wolf/lavastuff/

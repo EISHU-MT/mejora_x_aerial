@@ -1,0 +1,44 @@
+Versión 1 :
+* el mod fue agregado
+
+versión 2.0:
+*accesorios quitados
+*se disminuyó el tamaño de las texturas porque son muy altas y causan lag
+* se agregaron las alas demoníacas
+* Solucionado el problema de bateo de las alas del zodiaco
+
+versión 3.0:
+*alas demoníacas azul-rojas
+*se añadieron godoudamas
+
+version(4.0):
+*se actualizo los materiales de creacion
+*se agregaran escudos
+*escudo de ansata
+*escudo de obsidiana
+*escudo del heroe
+*escudo de chulthu
+*se agrego el idioma frances
+*optimizacion*
+
+version(5.0) --Actual--:
+*se agregaron el escudo de paladin
+*se agregaron el escudo de capitan america
+*se mejoro la api del mod,siendo ahora mas rapido
+*se añadio la resistencia otorgada por los escudos siendo estas:
+/-----/-----/------/------/-----/
+escudo capitan america: +15 hp
+escudo de ansata:       +15 hp
+escudo del heroe:       +20 hp
+escudo de chulthu:      +20 hp
+escudo de cobalto:      +10 hp
+escudo del paladin:     +18 hp
+godoudamas:             +5 hp
+/-----/-----/------/------/-----/
+
+nota: *el escudo chulthu  y el escudo de cobalto está disponible con el mod nuevos minerales
+news minerals:   https://content.minetest.net/packages/Giga_M/expansion_armor/
+
+El escudo del héroe está disponible con el mod lavastuff. Las alas de ángel oscuro están disponibles con el mod lavastuff
+
+lavastuff:    https://content.minetest.net/packages/Lone_Wolf/lavastuff/
