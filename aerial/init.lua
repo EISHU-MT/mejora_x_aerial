@@ -12,7 +12,8 @@ Aerial – Minetest mod that allows characters to fly with equipped wings
 aerial = {
 	name = "aerial",
 	wings = {},
-	flight = {}
+	flight = {},
+	originals = {}
 }
 
 -- i18n
@@ -44,7 +45,7 @@ if minetest.global_exists("armor") and armor.elements then
 end
 
 -- Create wing registration mechanism
-aerial.register_wings = function(material,description,flammable,jump,flyspeed, opt_desc)
+aerial.register_wings = function(material,description,flammable,jump,flyspeed, opt_desc, is_original)
 	-- Define wing values
 	
 	desc = opt_desc or {
@@ -52,6 +53,10 @@ aerial.register_wings = function(material,description,flammable,jump,flyspeed, o
 		textures = "aerial_uv_wings_" .. material .. ".png",
 		inventory_image = "aerial_inv_wings_" .. material .. ".png",
 	}
+	
+	if is_original then
+		aerial.originals[aerial.name .. ":wings_" .. material] = true
+	end
 	
 	local wingname = aerial.name .. ":wings_" .. material
 	local wing = {
@@ -80,7 +85,7 @@ aerial.register_wings = function(material,description,flammable,jump,flyspeed, o
 	armor:register_armor(wingname,wing)
 
 	-- Register wing crafting recipe
-	local n = armor.materials[material]
+	--[[local n = armor.materials[material]
 	minetest.register_craft({
 		output = wingname,
 		recipe = {
@@ -88,7 +93,7 @@ aerial.register_wings = function(material,description,flammable,jump,flyspeed, o
 			{n,  n, n},
 			{n, "", n}
 		},
-	})
+	})---]]
 
 	-- Register wing as fuel if it's flammable
 	if flammable > 0 then
@@ -123,43 +128,43 @@ end
 
 -- Create wood wings
 if armor.materials.wood and minetest.settings:get_bool("aerial_wings_wood",true) then
-	aerial.register_wings("wood","Wooden Wings",1,0,0, nil)
+	aerial.register_wings("wood","Wooden Wings",1,0,0, nil, true)
 end
 
 -- Create cactus wings
 if armor.materials.cactus and minetest.settings:get_bool("aerial_wings_cactus",true) then
-	aerial.register_wings("cactus","Cactus Wings",1,0,0, nil)
+	aerial.register_wings("cactus","Cactus Wings",1,0,0, nil, true)
 end
 
 -- Create bronze wings
 if armor.materials.bronze and minetest.settings:get_bool("aerial_wings_bronze",true) then
-	aerial.register_wings("bronze","Bronze Wings",0,0.5,-0.1, nil)
+	aerial.register_wings("bronze","Bronze Wings",0,0.5,-0.1, nil, true)
 end
 
 -- Create steel wings
 if armor.materials.steel and minetest.settings:get_bool("aerial_wings_steel",true) then
-	aerial.register_wings("steel","Steel Wings",0,0.6,0.5, nil)
+	aerial.register_wings("steel","Steel Wings",0,0.6,0.5, nil, true)
 end
 
 -- Create gold wings
 if armor.materials.gold and minetest.settings:get_bool("aerial_wings_gold",true) then
-	aerial.register_wings("gold","Golden Wings",0,1,1.4, nil)
+	aerial.register_wings("gold","Golden Wings",0,1,1.4, nil, true)
 end
 
 -- Create diamond wings
 if armor.materials.diamond and minetest.settings:get_bool("aerial_wings_diamond",true) then
-	aerial.register_wings("diamond","Diamond Wings",0,1.5,2)
+	aerial.register_wings("diamond","Diamond Wings",0,1.5,2, nil, true)
 end
 
 
+-- RAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHH
 
-
-
-
-
-
-
-
+aerial.register_wings("wings_demoniacas2","Demonic Wings Blues",0,1.5,0, {inventory_image = "alas_demoniacas2.png", mesh = "alas3d.b3d", textures = "alas_demoniacas2_inv.png"})
+aerial.register_wings("charred_wings","Demonic Wings",0,1.5,0, {inventory_image = "alas_carbonizadas_inv.png", mesh = "alas3d.b3d", textures = "alas_carbonizadas.png"})
+aerial.register_wings("harley_queen","Wings Harley Queen",0,1.5,0, {inventory_image = "harley_queen_inv.png", mesh = "alas3d.b3d", textures = "harley_queen.png"})
+aerial.register_wings("wings_zodiaco","Wings zodiaco",0,1.5,0, {inventory_image = "alas_zodiaco_inv.png", mesh = "alas3d.b3d", textures = "alas_zodiaco.png"})
+aerial.register_wings("wings_butterfly","Wings Butterfly",0,1.5,0, {inventory_image = "mariposa_inv.png", mesh = "alas3d.b3d", textures = "mariposa.png"})
+aerial.register_wings("wings_god","Wings Angel Dark",0,1.5,0, {inventory_image = "angel_dark_inv.png", mesh = "alas3d.b3d", textures = "angel_dark.png"})
 
 --[[
 	Flight logic
@@ -247,7 +252,11 @@ Flight = {
 
 				-- Make wings model visible on player
 				local wings_entity = minetest.add_entity(player:get_pos(),wing.name)
-				wings_entity:set_attach(player, '', {x=0,y=0.75,z=-2.75})
+				if not aerial.originals[wing.name] then
+					wings_entity:set_attach(player, '', {x=0,y=2,z=2})
+				else
+					wings_entity:set_attach(player, '', {x=0,y=0.75,z=-2.75})
+				end
 
 				-- Set flight values
 				flight.wing = wing
@@ -258,9 +267,6 @@ Flight = {
 				flight:add_jump()
 
 				-- Grant flight if wings are capable of flight, revoke flight otherwise
-				if not flight:grant() then
-					flight:revoke()
-				end
 
 				-- Prevent fall damage due to feather fall lag
 				local groups = player:get_armor_groups()
@@ -286,8 +292,6 @@ Flight = {
 					flight.entity = nil
 					flight.wing = nil
 
-					-- Revoke fly privilege
-					flight:revoke()
 
 					-- Remove fall damage protection
 					local groups = player:get_armor_groups()
@@ -372,6 +376,8 @@ Flight = {
 	end
 }
 
+minetest.register_on_joinplayer(Flight.new)
+
 -- Register handler for stamina loss due to flying
 minetest.register_globalstep(function(dtime)
 	for _,flight in pairs(aerial.flight) do
@@ -381,10 +387,12 @@ end)
 
 -- Register handler for when wings are equipped
 armor:register_on_equip(function(player, index, stack)
-	local wing = aerial.wings[stack:get_name()]
-	if wing then
-		Flight.get(player):equip(wing)
-	end
+	core.after(0.3, function(player, index, stack)
+		local wing = aerial.wings[stack:get_name()]
+		if wing and Flight.get(player) then
+			Flight.get(player):equip(wing)
+		end
+	end, player, index, stack)
 end)
 
 -- Register handler for when wings are unequipped
@@ -425,7 +433,7 @@ if dependencies.stamina.enabled then
 end
 
 -- Register joined players with flight tracker; on_equip gets called after
-minetest.register_on_joinplayer(Flight.new)
+
 
 -- Remove disconnected players from flight tracker
 minetest.register_on_leaveplayer(Flight.delete)
